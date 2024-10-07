@@ -1,0 +1,3 @@
+D:/docsUNI/9 Semestre UNI/Teoria de la informacion/cifrado de archivos/cmake-build-debug/CMakeFiles/untitled.dir
+D:/docsUNI/9 Semestre UNI/Teoria de la informacion/cifrado de archivos/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/docsUNI/9 Semestre UNI/Teoria de la informacion/cifrado de archivos/cmake-build-debug/CMakeFiles/rebuild_cache.dir
