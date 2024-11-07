@@ -1,0 +1,168 @@
+#include <iostream>
+using namespace std;
+
+struct Nodo {
+    int id;
+    string nombre;
+    Nodo *izq;
+    Nodo *der;
+};
+
+void insertar(int, string, Nodo *&);
+void recorrerInorden(Nodo *);
+void recorrerPreorden(Nodo *);
+void recorrerPostorden(Nodo *);
+Nodo* buscar(Nodo *, int);
+Nodo* eliminar(Nodo *, int);
+Nodo *raiz = NULL;
+
+int main() {
+    int id, op = 0;
+    string nombre;
+
+    do {
+        cout << "1. Insertar" << endl;
+        cout << "2. Mostrar (Inorden)" << endl;
+        cout << "3. Mostrar (Preorden)" << endl;
+        cout << "4. Mostrar (Postorden)" << endl;
+        cout << "5. Buscar" << endl;
+        cout << "6. Eliminar" << endl;
+        cout << "0. Salir" << endl;
+        cin >> op;
+
+        switch (op) {
+            case 1:
+                cout << "Id?: ";
+                cin >> id;
+                cout << "Nombre?: ";
+                cin >> nombre;
+                insertar(id, nombre, raiz);
+                break;
+            case 2:
+                recorrerInorden(raiz);
+                break;
+            case 3:
+                recorrerPreorden(raiz);
+                break;
+            case 4:
+                recorrerPostorden(raiz);
+                break;
+            case 5:
+                cout << "Id a buscar?: ";
+                cin >> id;
+                if (buscar(raiz, id))
+                    cout << "Elemento encontrado" << endl;
+                else
+                    cout << "Elemento no encontrado" << endl;
+                break;
+            case 6:
+                cout << "Id a eliminar?: ";
+                cin >> id;
+                raiz = eliminar(raiz, id);
+                break;
+            default:
+                break;
+        }
+
+    } while (op != 0);
+
+    return 0;
+}
+
+// Función de inserción
+void insertar(int d, string n, Nodo *&aux) {
+    Nodo *nuevo = new Nodo();
+    nuevo->id = d;
+    nuevo->nombre = n;
+    nuevo->izq = nuevo->der = NULL;
+
+    if (aux == NULL) {
+        aux = nuevo;
+    } else {
+        if (d < aux->id)
+            insertar(d, n, aux->izq);
+        else if (d > aux->id)
+            insertar(d, n, aux->der);
+        else
+            cout << "El Id " << d << " ya está en el árbol" << endl;
+    }
+}
+
+// Función para imprimir los datos del nodo, incluyendo "Creado en"
+void imprimirNodo(Nodo *aux) {
+    cout << "***************" << endl;
+    cout << "**Id: " << aux->id << endl;
+    cout << "**Nombre: " << aux->nombre << endl;
+    cout << "**Creado en: " << aux << endl;
+    cout << "***************" << endl;
+}
+
+// Recorrido en inorden
+void recorrerInorden(Nodo *aux) {
+    if (aux == NULL) return;
+    recorrerInorden(aux->izq);
+    imprimirNodo(aux); // Imprimir nodo con "Creado en"
+    recorrerInorden(aux->der);
+}
+
+// Recorrido en preorden
+void recorrerPreorden(Nodo *aux) {
+    if (aux == NULL) return;
+    imprimirNodo(aux); // Imprimir nodo con "Creado en"
+    recorrerPreorden(aux->izq);
+    recorrerPreorden(aux->der);
+}
+
+// Recorrido en postorden
+void recorrerPostorden(Nodo *aux) {
+    if (aux == NULL) return;
+    recorrerPostorden(aux->izq);
+    recorrerPostorden(aux->der);
+    imprimirNodo(aux); // Imprimir nodo con "Creado en"
+}
+
+// Función para buscar un nodo
+Nodo* buscar(Nodo *aux, int d) {
+    if (aux == NULL || aux->id == d)
+        return aux;
+
+    if (d < aux->id)
+        return buscar(aux->izq, d);
+    else
+        return buscar(aux->der, d);
+}
+
+// Función para encontrar el nodo más pequeño (necesaria para eliminación)
+Nodo* encontrarMin(Nodo *aux) {
+    while (aux && aux->izq != NULL)
+        aux = aux->izq;
+    return aux;
+}
+
+// Función para eliminar un nodo
+Nodo* eliminar(Nodo *aux, int d) {
+    if (aux == NULL)
+        return aux;
+
+    if (d < aux->id)
+        aux->izq = eliminar(aux->izq, d);
+    else if (d > aux->id)
+        aux->der = eliminar(aux->der, d);
+    else {
+        if (aux->izq == NULL) {
+            Nodo *temp = aux->der;
+            delete aux;
+            return temp;
+        } else if (aux->der == NULL) {
+            Nodo *temp = aux->izq;
+            delete aux;
+            return temp;
+        }
+
+        Nodo *temp = encontrarMin(aux->der);
+        aux->id = temp->id;
+        aux->nombre = temp->nombre;
+        aux->der = eliminar(aux->der, temp->id);
+    }
+    return aux;
+}
