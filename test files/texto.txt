@@ -1,5 +1,0 @@
-Este lugar fue seleccionado debido a su infraestructura vial altamente transitada
-por turistas y locales, lo que genera un entorno ideal para analizar la interacción de vehículos autónomos, 
-semiautónomos y convencionales en un contexto de movilidad compleja. 
-presenta una oportunidad unica para implementar tecnologias de inteligencia artificial (IA) y
- comunicación V2X en la mejora de la seguridad vial y la modernización del transporte.
